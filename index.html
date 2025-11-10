@@ -91,13 +91,14 @@
                         <p>Создать список</p>
                         <input id="listNameInput" type="text" placeholder="Введите имя" oninput="checkInput()">
                         <button onclick="createListOff()" class="create-list-cancel-btn">Отмена</button>
-                        <button id="createListSubmit" class="create-list-submit-btn" disabled>Готово</button>
+                        <button id="createListSubmit" class="create-list-submit-btn" disabled
+                            onclick="addNewTask()">Готово</button>
                     </div>
                 </div>
 
             </nav>
         </aside>
-        <section>
+        <section id="section">
             <div id="tasks-all" class="wrapper">
                 <div class="wrapper-header">
                     <p class="section-title">Мои задачи</p>
@@ -114,26 +115,38 @@
                 </button>
                 <div class="add-task-wrapper" style="display: none;" id="tasks-container">
                     <label class="radio">
-                        <input type="radio" name="choice" class="remove-radio">
-                        <span class="custom-radio"></span>
+                        <input type="radio" name="choice" class="remove-radio" onclick="handleRadioClick()">
                     </label>
                     <div class="add-wrapper">
                         <input id="taskNameInput" type="text" placeholder="Название">
                         <div style="display: flex; gap: 8px; align-items: center; ">
                             <i style="font-size: 13px;" class="ri-bar-chart-horizontal-line"></i>
-                            <input style="font-size: 13px;" type="text" placeholder="Дополнительная информация">
+                            <input id="taskInfoInput" style="font-size: 13px;" type="text"
+                                placeholder="Дополнительная информация">
                         </div>
-                        <div>
-                            <button id="today-btn">Сегодня</button>
-                            <button id="tomorrow-btn">Завтра</button>
+                        <div id="day-buttons" style="margin-top:8px">
+                            <button class="task-day-btn" onclick="selectDay('Сегодня')">Сегодня</button>
+                            <button class="task-day-btn" onclick="selectDay('Завтра')">Завтра</button>
                         </div>
                     </div>
                 </div>
-                <div class="info">
+                <div id="info" class="info">
                     <img src="https://www.gstatic.com/tasks/empty-tasks-light.svg" alt="" width="104px" height="104px">
                     <p class="info-title">Задач нет</p>
                     <p class="info-subtitle">Добавляйте списки задач и отслеживайте их выполнение в Google Workspace</p>
                 </div>
+                <ul id="task-list-finished-wrapper"></ul>
+                <!-- <ul id="task-list-finished-wrapper">
+                    <li class="task-list-finished">
+                        <button><i class="ri-check-line"></i></button>
+                        <ul>
+                            <del>${name}</del>
+                            <p class="tasks-list-subtitle">${info}</p>
+                            <p class="tasks-list-date">${currentDateFormatted}</p>
+                        </ul>
+                    </li>
+                </ul> -->
+
             </div>
             <!-- <div class="wrapper">
                 <div class="wrapper-header">
