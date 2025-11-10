@@ -70,26 +70,41 @@
             </div>
             <button onclick="overlayOn()" class="create-btn"><i class="ri-add-line"></i>Создать</button>
             <nav class="task-menu">
-                <ul>
-                    <li class="active"><i class="ri-checkbox-circle-line"></i>Все задачи</li>
-                    <li><i class="ri-star-line"></i>Помеченные</li>
-                </ul>
+                <div class="menu-buttons">
+                    <button id="btn-all" class="menu-btn active" onclick="showAllTasks() "><i
+                            class="ri-checkbox-circle-line"></i>Все
+                        задачи</button>
+                    <button id="btn-starred" class="menu-btn" onclick="showStarredTasks() "><i
+                            class="ri-star-line"></i>Помеченные</button>
+                </div>
                 <div class="lists-section">
                     <div class="lists-header">
-                        Списки <i class="ri-arrow-down-s-line"></i>
+                        <button>Списки <i class="ri-arrow-down-s-line"></i></button></i>
                     </div>
-                    <button class="add-list"><i class="ri-add-line"></i>Создать список</button>
+                    <ul class="lists-dropdown">
+                        <li><input type="checkbox">Мои задачи</li>
+                    </ul>
                 </div>
+                <button class="add-list" onclick="createListOn()"><i class="ri-add-line"></i>Создать список</button>
+                <div id="create-list-overlay" class="create-list-overlay">
+                    <div class="create-list-form">
+                        <p>Создать список</p>
+                        <input id="listNameInput" type="text" placeholder="Введите имя" oninput="checkInput()">
+                        <button onclick="createListOff()" class="create-list-cancel-btn">Отмена</button>
+                        <button id="createListSubmit" class="create-list-submit-btn" disabled>Готово</button>
+                    </div>
+                </div>
+
             </nav>
         </aside>
-
         <section>
-            <div class="wrapper">
+            <div id="tasks-all" class="wrapper">
                 <div class="wrapper-header">
                     <p class="section-title">Мои задачи</p>
                     <button class="wrapper-header__btn"><i class="ri-more-2-fill"></i></button>
                 </div>
-                <button class="add-task-btn"><svg height="24" width="24">
+                <button class="add-task-btn" onclick="addTask()">
+                    <svg height="24" width="24">
                         <rect fill="none" height="24" width="24"></rect>
                         <path
                             d="M22,5.18L10.59,16.6l-4.24-4.24l1.41-1.41l2.83,2.83l10-10L22,5.18z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8 c1.57,0,3.04,0.46,4.28,1.25l1.45-1.45C16.1,2.67,14.13,2,12,2C6.48,2,2,6.48,2,12s4.48,10,10,10c1.73,0,3.36-0.44,4.78-1.22 l-1.5-1.5C14.28,19.74,13.17,20,12,20z M19,15h-3v2h3v3h2v-3h3v-2h-3v-3h-2V15z">
@@ -97,11 +112,43 @@
                     </svg>
                     Добавить задачу
                 </button>
+                <div class="add-task-wrapper" style="display: none;" id="tasks-container">
+                    <label class="radio">
+                        <input type="radio" name="choice" class="remove-radio">
+                        <span class="custom-radio"></span>
+                    </label>
+                    <div class="add-wrapper">
+                        <input id="taskNameInput" type="text" placeholder="Название">
+                        <div style="display: flex; gap: 8px; align-items: center; ">
+                            <i style="font-size: 13px;" class="ri-bar-chart-horizontal-line"></i>
+                            <input style="font-size: 13px;" type="text" placeholder="Дополнительная информация">
+                        </div>
+                        <div>
+                            <button id="today-btn">Сегодня</button>
+                            <button id="tomorrow-btn">Завтра</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="info">
                     <img src="https://www.gstatic.com/tasks/empty-tasks-light.svg" alt="" width="104px" height="104px">
                     <p class="info-title">Задач нет</p>
-                    <P>Добовляйте списки задач и отслеживайте их выполнение в Google Workspace</P>
+                    <p class="info-subtitle">Добавляйте списки задач и отслеживайте их выполнение в Google Workspace</p>
                 </div>
+            </div>
+            <!-- <div class="wrapper">
+                <div class="wrapper-header">
+                    <p class="section-title">${TITLE}</p>
+                    <button class="wrapper-header__btn"><i class="ri-more-2-fill"></i></button>
+                </div>
+                <button class="add-task-btn">
+                    <svg height="24" width="24">
+                        <rect fill="none" height="24" width="24"></rect>
+                        <path
+                            d="M22,5.18L10.59,16.6l-4.24-4.24l1.41-1.41l2.83,2.83l10-10L22,5.18z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8 c1.57,0,3.04,0.46,4.28,1.25l1.45-1.45C16.1,2.67,14.13,2,12,2C6.48,2,2,6.48,2,12s4.48,10,10,10c1.73,0,3.36-0.44,4.78-1.22 l-1.5-1.5C14.28,19.74,13.17,20,12,20z M19,15h-3v2h3v3h2v-3h3v-2h-3v-3h-2V15z">
+                        </path>
+                    </svg>
+                    Добавить задачу
+                </button>
                 <div style="display: flex; align-items: start;">
                     <input type="radio" id="task-checkbox">
                     <div class="add-wrapper" style="margin-top: 12px;">
@@ -115,6 +162,33 @@
                             <button id="tomorrow-btn">Завтра</button>
                         </div>
                     </div>
+                </div>
+                <div class="info">
+                    <img src="https://www.gstatic.com/tasks/empty-tasks-light.svg" alt="" width="104px" height="104px">
+                    <p class="info-title">Задач нет</p>
+                    <p>Добавляйте списки задач и отслеживайте их выполнение в Google Workspace</p>
+                </div>
+            </div> -->
+
+
+            <div id="tasks-starred" class="wrapper" style="display: none;">
+                <div class="wrapper-header">
+                    <p class="section-title">Помеченные задачи</p>
+                    <button class="wrapper-header__btn"><i class="ri-more-2-fill"></i></button>
+                </div>
+                <button class="add-task-btn">
+                    <svg height="24" width="24">
+                        <rect fill="none" height="24" width="24"></rect>
+                        <path
+                            d="M22,5.18L10.59,16.6l-4.24-4.24l1.41-1.41l2.83,2.83l10-10L22,5.18z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8 c1.57,0,3.04,0.46,4.28,1.25l1.45-1.45C16.1,2.67,14.13,2,12,2C6.48,2,2,6.48,2,12s4.48,10,10,10c1.73,0,3.36-0.44,4.78-1.22 l-1.5-1.5C14.28,19.74,13.17,20,12,20z M19,15h-3v2h3v3h2v-3h3v-2h-3v-3h-2V15z">
+                        </path>
+                    </svg>
+                    Добавить помеченную задачу
+                </button>
+                <div class="info">
+                    <img src="./imgs/nothing-starred-light.svg" alt="" width="160px" height="160px">
+                    <p class="info-title">Помеченных задач нет</p>
+                    <p>Чтобы быстро находить важные задачи, помечайте их звездочками, и они появятся здесь.</p>
                 </div>
             </div>
         </section>
